@@ -22,6 +22,9 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "cc2500.h"
+#include "icp10100.h"
+#include "icm42688.h"
+#include "pid.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -59,7 +62,20 @@ static void MX_SPI1_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-CC2500_Packet current_packet; // The current packet received by the CC2500
+
+#define SAMPLE_PERIOD 0.005
+
+CC2500_Packet current_packet = {}; // The current packet received by the CC2500
+pid height_pid = {
+		.prev_error=0,
+		.dt=SAMPLE_PERIOD,
+		.integrator=0,
+		.kd=0.05,
+		.ki=0.5,
+		.kp=200
+}; // The PID used for height control. Parameters determined by Python modeling
+// for 1m/s altitude increase by barometer readings
+
 /* USER CODE END 0 */
 
 /**
@@ -104,6 +120,7 @@ int main(void)
   if (ICM42688_Setup()) {
 	  // TODO: Do something.. if the driver here hasn't set up.
   }
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -111,7 +128,6 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
@@ -287,7 +303,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
 	if (GPIO_Pin != 9) { // Right now, we only care about interrupts coming from the CC2500
 		return;
 	}
-	CC2500_ReceivePacket(&current_packet);
+	CC2500_ReadPacket(current_packet);
 }
 /* USER CODE END 4 */
 
