@@ -65,7 +65,10 @@ static void MX_SPI1_Init(void);
 
 #define SAMPLE_PERIOD 0.005
 
-CC2500_Packet current_packet = {}; // The current packet received by the CC2500
+CC2500_Packet current_packet = {
+		.id=0,
+		.payload={0,0,0,0}
+}; // The current packet received by the CC2500
 pid height_pid = {
 		.prev_error=0,
 		.dt=SAMPLE_PERIOD,
@@ -303,7 +306,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
 	if (GPIO_Pin != 9) { // Right now, we only care about interrupts coming from the CC2500
 		return;
 	}
-	CC2500_ReadPacket(current_packet);
+	CC2500_ReceivePacket(&current_packet);
 }
 /* USER CODE END 4 */
 

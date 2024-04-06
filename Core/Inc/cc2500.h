@@ -144,7 +144,7 @@ void CC2500_FlushRXFIFO();
 void CC2500_ReadRXFIFOBytesInfo(int* num_bytes, int* rx_overflow);
 
 // Reads the inc. packet from the CC2500
-void CC2500_ReadPacket(CC2500_Packet *packet);
+void CC2500_ReceivePacket(CC2500_Packet *packet);
 
 // Initializes the CC2500 and returns the number of errors
 uint8_t CC2500_Init();
