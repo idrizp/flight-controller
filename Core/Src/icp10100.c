@@ -155,7 +155,7 @@ void ICP10100_ReadData(int measure_command, float data[2]) {
 }
 
 // Computes the height of the ICP10100
-float ICP10100_ComputeHeight(float temperature, float pressure) {
+float ICP10100_ComputeAltitude(float temperature, float pressure) {
 	float rel = log(pressure / P_0) * (temperature + 273.15);
 	return z_coeff * rel;
 }

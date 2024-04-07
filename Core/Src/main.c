@@ -25,6 +25,7 @@
 #include "icp10100.h"
 #include "icm42688.h"
 #include "pid.h"
+#include "sensor.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -62,7 +63,6 @@ static void MX_SPI1_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-
 #define SAMPLE_PERIOD 0.005
 
 CC2500_Packet current_packet = {
@@ -78,6 +78,13 @@ pid height_pid = {
 		.kp=200
 }; // The PID used for height control. Parameters determined by Python modeling
 // for 1m/s altitude increase by barometer readings
+
+// SENSORS START
+accelerometer *accelerometer_sensor;
+barometer *barometer_sensor;
+rotor rotors[4] = {{.speed=0}, {.speed=0}, {.speed=0}, {.speed=0}}; // The rotors
+// SENSORS END
+
 
 /* USER CODE END 0 */
 

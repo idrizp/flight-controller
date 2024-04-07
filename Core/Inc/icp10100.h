@@ -25,7 +25,7 @@
 void ICP10100_ReadData(int measure_command, float data[2]);
 
 // From temperature[K] and pressure [Pa], the height(where the pressure sensor is) relative to sea level in [m]
-float ICP10100_ComputeHeight(float temperature, float pressure);
+float ICP10100_ComputeAltitude(float temperature, float pressure);
 
 // Sets up the ICP10100 and returns the number of errors.
 int ICP10100_Init();
